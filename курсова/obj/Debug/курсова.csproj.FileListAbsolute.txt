@@ -1,0 +1,7 @@
+C:\Users\User\source\repos\курсова\курсова\bin\Debug\курсова.exe.config
+C:\Users\User\source\repos\курсова\курсова\bin\Debug\курсова.exe
+C:\Users\User\source\repos\курсова\курсова\bin\Debug\курсова.pdb
+C:\Users\User\source\repos\курсова\курсова\obj\Debug\курсова.csproj.AssemblyReference.cache
+C:\Users\User\source\repos\курсова\курсова\obj\Debug\курсова.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\курсова\курсова\obj\Debug\курсова.exe
+C:\Users\User\source\repos\курсова\курсова\obj\Debug\курсова.pdb
