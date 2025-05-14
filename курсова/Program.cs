@@ -13,7 +13,7 @@ namespace курсова
         static int cursorX = 0, cursorY = 0;
         static bool[,] open;
         static bool[,] Flag;
-        static int boombs = 1;
+        static int boombs = 5;
         static int width = 10;
         static int height = 10;
         static void check(int[,] sum, int i, int j)
@@ -89,7 +89,7 @@ namespace курсова
                     if (sum[i, j] == 9)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkRed;
-                        Console.Write("Б");
+                        Console.Write("X");
                     }
                     else if (sum[i, j] == 0)
                     {
@@ -122,7 +122,7 @@ namespace курсова
                 int j = rnd.Next(0, sum.GetLength(1));
                 if(sum[i, j] != 9) 
                 { 
-                sum[i,j] = 9;
+                    sum[i,j] = 9;
                     g++;
                 }
             }
@@ -191,8 +191,7 @@ namespace курсова
                     }
                     else if (sum[cursorY, cursorX] == 0)
                     {
-                        open[cursorY, cursorX] = true;
-                        open_all_zero(sum);
+                        revealed_zero(sum);
                     }
                     break;
                 case ConsoleKey.Escape:
@@ -208,52 +207,37 @@ namespace курсова
         }
         static void revealed_zero(int[,] sum)
         {
-            int centerY = sum.GetLength(0) / 2;
-            int centerX = sum.GetLength(1) / 2;
+            bool[,] visited = new bool[sum.GetLength(0), sum.GetLength(1)];
+            Queue<(int x, int y)> queue = new Queue<(int x, int y)>();
+            queue.Enqueue((cursorX, cursorY));
 
-            int[] dx = { 1, 0, -1, 0 }; // Право, Вниз, Ліво, Вгору
-            int[] dy = { 0, 1, 0, -1 };
-
-            int x = cursorX, y = cursorY;
-            int step = 1; // Кількість кроків у кожному напрямку
-            int dir = 0;  // Напрямок (0 - вправо, 1 - вниз, 2 - вліво, 3 - вгору)
-
-
-            while (step < Math.Max(sum.GetLength(0), sum.GetLength(1)) * 2) // Гарантуємо повний обхід
+            while (queue.Count > 0)
             {
-                for (int i = 0; i < 2; i++) // Кожен цикл проходимо 2 рази (однакова довжина кроків)
+                var (x, y) = queue.Dequeue();
+
+                if (x < 0 || x >= sum.GetLength(1) || y < 0 || y >= sum.GetLength(0))
                 {
-                    for (int j = 0; j < step; j++)
-                    {
-                        x += dx[dir];
-                        y += dy[dir];
-
-                        // Перевіряємо чи не виходимо за межі
-                        if (x >= 0 && x < sum.GetLength(1) && y >= 0 && y < sum.GetLength(0))
-                        {
-                            open[y, x] = true; // Відкриваємо клітинку
-
-                            // Якщо це НЕ 0 – зупиняємось (якщо треба)
-                            if (sum[y, x] != 0)
-                            {
-                                return;
-                            }
-                        }
-                    }
-                    dir = (dir + 1) % 4; // Зміна напряму
+                    continue;
                 }
-                step++; // Збільшуємо кроки після двох поворотів
-            }
-        }//оце треба даработать ще, це типу пусті відкриваються?????????
-        static void open_all_zero(int[,] sum)
-        {
-            for(int i = 0;i<width;i++)
-            {
-                for (int j = 0; j < height; j++)
+                if (visited[y, x] || open[y, x])
                 {
-                    if (sum[i, j] == 0)
+                    continue;
+                }
+                visited[y, x] = true;
+                open[y, x] = true;
+                // Якщо не 0 — не додаємо сусідів
+                if (sum[y, x] != 0)
+                {
+                    continue;
+                }
+                
+                // Інакше — додаємо всі 8 сусідів
+                for (int dx = -1; dx <= 1; dx++)
+                {
+                    for (int dy = -1; dy <= 1; dy++)
                     {
-                        open[i,j] = true;
+                        if (dx == 0 && dy == 0) continue;
+                        queue.Enqueue((x + dx, y + dy));
                     }
                 }
             }
@@ -294,7 +278,6 @@ namespace курсова
                 bombs = int.Parse(Console.ReadLine());
             } while (bombs >= a * b || bombs < 1);
         } //поки не трогать
-
         static void Main(string[] args)
         {
             Console.InputEncoding = Encoding.UTF8;
@@ -309,7 +292,7 @@ namespace курсова
             do
             {
                 Console.Clear();
-                if (check_win(sum) == 100)
+                if (check_win(sum) == width*height)
                 {
                     print_opened(sum);
                     Console.ForegroundColor = ConsoleColor.Green;
