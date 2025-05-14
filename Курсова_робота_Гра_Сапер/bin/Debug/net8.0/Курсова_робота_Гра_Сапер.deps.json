@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Курсова_робота_Гра_Сапер/1.0.0": {
+        "runtime": {
+          "Курсова_робота_Гра_Сапер.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Курсова_робота_Гра_Сапер/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
