@@ -8,7 +8,7 @@ class Levels
 {
     public void custom_level()
     {
-        int bombs =0, a =0, b =0;
+        int bombs = 0, a = 0, b = 0;
         Console.Clear();
         do
         {
@@ -104,10 +104,19 @@ class Levels
                     }
                 }
             }
-            else if (a < 2)
+            else if (a < 2 || a > 14)
             {
-                Console.Write("Кількість рядів не може буть менше за 2! Спробуйте ще раз");
-                Console.WriteLine();
+                Console.Clear();
+                if (a < 2)
+                {
+                    Console.Write("Кількість рядів не може буть менше за 2! Спробуйте ще раз");
+                    Console.WriteLine();
+                }
+                if (a > 14)
+                {
+                    Console.Write("Кількість рядів не може буть більша за 14! Спробуйте ще раз");
+                    Console.WriteLine();
+                }
                 validInput = true;
                 while (validInput)
                 {
@@ -131,10 +140,19 @@ class Levels
                     }
                 }
             }
-            else if (b < 2)
+            else if (b < 2 || b > 28)
             {
-                Console.Write("Кількість стовпців не може буть менше за 2! Спробуйте ще раз");
-                Console.WriteLine();
+                Console.Clear();
+                if (b < 2)
+                {
+                    Console.Write("Кількість стовпців не може буть менше за 2! Спробуйте ще раз");
+                    Console.WriteLine();
+                }
+                if (b > 28)
+                {
+                    Console.Write("Кількість стовпців не може буть менше за 2! Спробуйте ще раз");
+                    Console.WriteLine();
+                }
                 validInput = true;
                 while (validInput)
                 {
@@ -159,7 +177,7 @@ class Levels
             }
 
 
-        } while (a < 2 || b < 2);
+        } while (a < 2 || b < 2 || a > 14);
         Console.WriteLine();
         Console.Clear();
         do
@@ -206,26 +224,27 @@ class Levels
 
     public void level(Sapper sapper)
     {
+        Menu menu = new Menu();
         Gameplay game = new Gameplay(sapper);
         Console_Output con = new Console_Output(sapper);
         Initialization_Methods init = new Initialization_Methods(sapper);
         ConsoleKey key;
-        init.field_bombs(sapper.sum);
+        init.field_bombs(sapper.gameField);
         do
         {
             Console.Clear();
-            if (game.check_win(sapper.sum) == sapper.Width * sapper.Height)
+            if (game.check_win(sapper.gameField) == sapper.Width * sapper.Height)
             {
-                con.print_opened(sapper.sum);
+                con.print_opened(sapper.gameField);
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("------YOU WIN-------");
                 Console.ResetColor();
                 Thread.Sleep(2500);
-                break;
+                menu.menu();
             }
-            con.print(sapper.sum);
+            con.print(sapper.gameField);
             key = Console.ReadKey(true).Key;
-            game.movements(key, sapper.sum);
+            game.movements(key, sapper.gameField);
         } while (key != ConsoleKey.Escape);
     }
 }

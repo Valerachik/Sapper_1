@@ -9,9 +9,9 @@ class Menu
 {
     private int menuY = 0;
     private int page = 0;
-    string[] difficulty = { "Легка", "Середня", "Складна", "Користувацька", "Назад до головно меню" };
-    string[] menu_1 = { "Нова гра", "Керування", "Вихід" };
-    string[] control = { "Назад до головно меню" };
+    private string[] difficulty = { "Легка", "Середня", "Складна", "Користувацька", "Назад до головного меню" };
+    private string[] menu_1 = { "Нова гра", "Керування", "Вихід" };
+    private string[] control = { "Назад до головно меню" };
     Levels levels = new Levels();
     public void menu()
     {
@@ -41,8 +41,8 @@ class Menu
                 Console.WriteLine("↓ – рух вниз");
                 Console.WriteLine("← – рух вліво");
                 Console.WriteLine("→ – рух вправо");
-                Console.WriteLine("F - відкрити клітинку");
-                Console.WriteLine("Enter - обрати клітинку");
+                Console.WriteLine("F - поставити прапорець/забрати прапорець");
+                Console.WriteLine("Enter - відкрити клітинку");
                 Console.WriteLine("Escape - вийти в головне меню");
                 print_menu(control);
                 key = Console.ReadKey(true).Key;
@@ -60,7 +60,7 @@ class Menu
         }
     }
 
-    public void print_menu(string[] menu)
+    private void print_menu(string[] menu)
     {
         for (int i = 0; i < menu.Length; i++)
         {
@@ -78,7 +78,7 @@ class Menu
         }
     }
 
-    public void menu_movement(ConsoleKey key, string[] Menu)
+    private void menu_movement(ConsoleKey key, string[] Menu)
     {
         switch (key)
         {
@@ -93,6 +93,10 @@ class Menu
                 {
                     menuY++;
                 }
+                break;
+            case ConsoleKey.Escape:
+                page = 0;
+                menu();
                 break;
             case ConsoleKey.Enter:
                 if (page == 0)
@@ -122,16 +126,16 @@ class Menu
                 {
                     switch (menuY)
                     {
-                        case 0:
-                            Sapper sapperEasy = new Sapper(6, 6, 5);
+                        case 0://складність була приблизно вирахувана за формулою стовпці*ряди*коефіцієнт складності 
+                            Sapper sapperEasy = new Sapper(6, 6, 5); //коефіцієнт складності = 0.1
                             levels.level(sapperEasy);
                             break;
                         case 1:
-                            Sapper sapperMedium = new Sapper(8, 8, 10);
+                            Sapper sapperMedium = new Sapper(8, 8, 10);//коефіцієнт складності = 0.15
                             levels.level(sapperMedium);
                             break;
                         case 2:
-                            Sapper sapperHard = new Sapper(10, 10, 15);
+                            Sapper sapperHard = new Sapper(10, 10, 20);//коефіцієнт складності = 0.2
                             levels.level(sapperHard);
                             break;
                         case 3:

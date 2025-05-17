@@ -18,31 +18,31 @@ class Gameplay
         switch (key)
         {
             case ConsoleKey.UpArrow:
-                if (sapper.cursorY > 0)
+                if (sapper.CursorY > 0)
                 {
-                    sapper.cursorY--;
+                    sapper.CursorY--;
                 }
                 break;
             case ConsoleKey.DownArrow:
-                if (sapper.cursorY < sum.GetLength(0) - 1)
+                if (sapper.CursorY < sum.GetLength(0) - 1)
                 {
-                    sapper.cursorY++;
+                    sapper.CursorY++;
                 }
                 break;
             case ConsoleKey.LeftArrow:
-                if (sapper.cursorX > 0)
+                if (sapper.CursorX > 0)
                 {
-                    sapper.cursorX--;
+                    sapper.CursorX--;
                 }
                 break;
             case ConsoleKey.RightArrow:
-                if (sapper.cursorX < sum.GetLength(1) - 1)
+                if (sapper.CursorX < sum.GetLength(1) - 1)
                 {
-                    sapper.cursorX++;
+                    sapper.CursorX++;
                 }
                 break;
             case ConsoleKey.Enter:
-                if (sum[sapper.cursorY, sapper.cursorX] == 9)
+                if (sum[sapper.CursorY, sapper.CursorX] == 9)
                 {
                     Console.Clear();
                     con.print_opened(sum);
@@ -52,11 +52,11 @@ class Gameplay
                     Thread.Sleep(2500);
                     menu.menu();
                 }
-                else if (sum[sapper.cursorY, sapper.cursorX] != 0)
+                else if (sum[sapper.CursorY, sapper.CursorX] != 0)
                 {
-                    sapper.open[sapper.cursorY, sapper.cursorX] = true;
+                    sapper.Open[sapper.CursorY, sapper.CursorX] = true;
                 }
-                else if (sum[sapper.cursorY, sapper.cursorX] == 0)
+                else if (sum[sapper.CursorY, sapper.CursorX] == 0)
                 {
                     revealed_zero(sum);
                 }
@@ -65,13 +65,26 @@ class Gameplay
                 menu.menu();
                 break;
             case ConsoleKey.F:
-                if (sapper.Flag[sapper.cursorY, sapper.cursorX] == true)
+                if (sapper.Flags > 0)
                 {
-                    sapper.Flag[sapper.cursorY, sapper.cursorX] = false;
+                    if (sapper.Flag[sapper.CursorY, sapper.CursorX] == true)
+                    {
+                        sapper.Flag[sapper.CursorY, sapper.CursorX] = false;
+                        sapper.Flags++;
+                    }
+                    else
+                    {
+                        sapper.Flag[sapper.CursorY, sapper.CursorX] = true;
+                        sapper.Flags--;
+                    }
                 }
-                else
+                else if (sapper.Flags == 0)
                 {
-                    sapper.Flag[sapper.cursorY, sapper.cursorX] = true;
+                    if (sapper.Flag[sapper.CursorY, sapper.CursorX] == true)
+                    {
+                        sapper.Flag[sapper.CursorY, sapper.CursorX] = false;
+                        sapper.Flags++;
+                    }
                 }
                 break;
         }
@@ -80,7 +93,7 @@ class Gameplay
     {
         bool[,] visited = new bool[sum.GetLength(0), sum.GetLength(1)];
         Queue<(int x, int y)> zero = new Queue<(int x, int y)>();
-        zero.Enqueue((sapper.cursorX, sapper.cursorY));
+        zero.Enqueue((sapper.CursorX, sapper.CursorY));
 
         while (zero.Count > 0)
         {
@@ -90,12 +103,12 @@ class Gameplay
             {
                 continue;
             }
-            if (visited[y, x] || sapper.open[y, x])
+            if (visited[y, x] || sapper.Open[y, x])
             {
                 continue;
             }
             visited[y, x] = true;
-            sapper.open[y, x] = true;
+            sapper.Open[y, x] = true;
             if (sum[y, x] != 0)
             {
                 continue;
@@ -120,11 +133,11 @@ class Gameplay
         {
             for (int j = 0; j < sum.GetLength(1); j++)
             {
-                if (sum[i, j] != 9 && sapper.open[i, j])
+                if (sum[i, j] != 9 && sapper.Open[i, j])
                 {
                     win++;
                 }
-                if (sum[i, j] == 9 && !sapper.open[i, j])
+                if (sum[i, j] == 9 && !sapper.Open[i, j])
                 {
                     win++;
                 }

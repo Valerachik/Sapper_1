@@ -19,7 +19,7 @@ class Console_Output
             {
 
                 Console.Write("|");
-                if (i == sapper.cursorY && j == sapper.cursorX)
+                if (i == sapper.CursorY && j == sapper.CursorX)
                 {
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.ForegroundColor = ConsoleColor.Black;
@@ -29,7 +29,7 @@ class Console_Output
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("F");
                 }
-                else if (sapper.open[i, j])
+                else if (sapper.Open[i, j])
                 {
                     if (sum[i, j] == 9)
                     {
@@ -48,7 +48,7 @@ class Console_Output
                 }
                 else
                 {
-                    Console.Write("'");
+                    Console.Write("\u25A0"); // \u25A0 - ■ 
                 }
                 Console.ResetColor();
             }
@@ -60,6 +60,7 @@ class Console_Output
             }
             Console.WriteLine();
         }
+        Console.WriteLine($"Прапорців усього: {sapper.Flags}");
     }
     public void print_opened(int[,] sum)
     {
@@ -68,7 +69,7 @@ class Console_Output
             for (int j = 0; j < sum.GetLength(1); j++)
             {
                 Console.Write("|");
-                if (i == sapper.cursorY && j == sapper.cursorX)
+                if (i == sapper.CursorY && j == sapper.CursorX)
                 {
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.ForegroundColor = ConsoleColor.Black;
