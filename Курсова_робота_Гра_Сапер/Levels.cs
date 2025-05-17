@@ -10,6 +10,7 @@ class Levels
     {
         int bombs = 0, a = 0, b = 0;
         Console.Clear();
+
         do
         {
             bool validInput = true;
@@ -34,8 +35,22 @@ class Levels
                     Console.WriteLine("Ви не ввели значення! Спробуйте ще раз.");
                 }
             }
-            validInput = true;
             Console.Clear();
+            if (a < 2)
+            {
+                Console.Write("Кількість рядів не може буть менше за 2! Спробуйте ще раз");
+                Console.WriteLine();
+            }
+            if (a > 14)
+            {
+                Console.Write("Кількість рядів не може буть більша за 14! Спробуйте ще раз");
+                Console.WriteLine();
+            }
+        } while (a < 2 || a > 14);
+        Console.Clear();
+        do
+        {
+            bool validInput = true;
             while (validInput)
             {
                 try
@@ -56,128 +71,18 @@ class Levels
                     Console.WriteLine("Ви не ввели значення! Спробуйте ще раз.");
                 }
             }
-            if (a < 2 && b < 2)
+            Console.Clear();
+            if (b < 2)
             {
-                Console.Write("Площа поля не може бути менше за 2х2 клітинки! Спробуйте ще раз");
+                Console.Write("Кількість стовпців не може буть менше за 2! Спробуйте ще раз");
                 Console.WriteLine();
-                validInput = true;
-                while (validInput)
-                {
-                    try
-                    {
-                        Console.Write("Введіть кількість рядів: ");
-                        a = int.Parse(Console.ReadLine());
-                        Console.WriteLine();
-                        validInput = false;
-                    }
-                    catch (FormatException)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Ви ввели не число! Спробуйте ще раз");
-                        validInput = true;
-                    }
-                    catch (ArgumentNullException)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Ви не ввели значення! Спробуйте ще раз.");
-                    }
-                }
-                validInput = true;
-                while (validInput)
-                {
-                    try
-                    {
-                        Console.Write("Введіть кількість стовпців: ");
-                        b = int.Parse(Console.ReadLine());
-                        validInput = false;
-                    }
-                    catch (FormatException)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Ви ввели не число! Спробуйте ще раз");
-                        validInput = true;
-                    }
-                    catch (ArgumentNullException)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Ви не ввели значення! Спробуйте ще раз.");
-                    }
-                }
             }
-            else if (a < 2 || a > 14)
+            if (b > 28)
             {
-                Console.Clear();
-                if (a < 2)
-                {
-                    Console.Write("Кількість рядів не може буть менше за 2! Спробуйте ще раз");
-                    Console.WriteLine();
-                }
-                if (a > 14)
-                {
-                    Console.Write("Кількість рядів не може буть більша за 14! Спробуйте ще раз");
-                    Console.WriteLine();
-                }
-                validInput = true;
-                while (validInput)
-                {
-                    try
-                    {
-                        Console.Write("Введіть кількість рядів: ");
-                        a = int.Parse(Console.ReadLine());
-                        Console.WriteLine();
-                        validInput = false;
-                    }
-                    catch (FormatException)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Ви ввели не число! Спробуйте ще раз");
-                        validInput = true;
-                    }
-                    catch (ArgumentNullException)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Ви не ввели значення! Спробуйте ще раз.");
-                    }
-                }
+                Console.Write("Кількість стовпців не може буть більша за 28! Спробуйте ще раз");
+                Console.WriteLine();
             }
-            else if (b < 2 || b > 28)
-            {
-                Console.Clear();
-                if (b < 2)
-                {
-                    Console.Write("Кількість стовпців не може буть менше за 2! Спробуйте ще раз");
-                    Console.WriteLine();
-                }
-                if (b > 28)
-                {
-                    Console.Write("Кількість стовпців не може буть менше за 2! Спробуйте ще раз");
-                    Console.WriteLine();
-                }
-                validInput = true;
-                while (validInput)
-                {
-                    try
-                    {
-                        Console.Write("Введіть кількість стовпців: ");
-                        b = int.Parse(Console.ReadLine());
-                        validInput = false;
-                    }
-                    catch (FormatException)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Ви ввели не число! Спробуйте ще раз");
-                        validInput = true;
-                    }
-                    catch (ArgumentNullException)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Ви не ввели значення! Спробуйте ще раз.");
-                    }
-                }
-            }
-
-
-        } while (a < 2 || b < 2 || a > 14);
+        } while (b < 2 || b > 28);
         Console.WriteLine();
         Console.Clear();
         do
@@ -202,20 +107,18 @@ class Levels
                     Console.WriteLine("Ви не ввели значення! Спробуйте ще раз.");
                 }
             }
-
             if (bombs >= a * b)
             {
                 Console.Clear();
                 Console.Write("Бомб не може буть більше ніж клітинок на полі! Спробуйте ще раз!");
                 Console.WriteLine();
             }
-            else if (bombs < 1)
+            if (bombs < 1)
             {
                 Console.Clear();
                 Console.Write("На полі повинна бути хоча б одна бомба! Спробуйте ще раз!");
                 Console.WriteLine();
             }
-
         } while (bombs >= a * b || bombs < 1);
         Console.Clear();
         Sapper sapper = new Sapper(a, b, bombs);
