@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Курсова_робота_Гра_Сапер")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1a499386878c4903bbd78fd39416f4e852fbcae9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bf0081442ee6e52c3ba581e583c51b183ee042d9")]
 [assembly: System.Reflection.AssemblyProductAttribute("Курсова_робота_Гра_Сапер")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Курсова_робота_Гра_Сапер")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

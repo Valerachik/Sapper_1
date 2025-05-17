@@ -4,19 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 class Initialization_Methods
 {
     private Sapper sapper;
     public Initialization_Methods(Sapper s)
     {
-        this.sapper = s;
+        sapper = s;
     }
     public void field_bombs(int[,] sum)
     {
         Random rnd = new Random();
         int g = 0;
-        while (g < sapper.Boombs)
+        while (g < sapper.Bombs)
         {
             int i = rnd.Next(0, sum.GetLength(0));
             int j = rnd.Next(0, sum.GetLength(1));

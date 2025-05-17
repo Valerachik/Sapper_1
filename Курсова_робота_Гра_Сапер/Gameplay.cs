@@ -9,11 +9,12 @@ class Gameplay
     private Sapper sapper;
     public Gameplay(Sapper s)
     {
-        this.sapper = s;
+        sapper = s;
     }
-    public void movments(ConsoleKey key, int[,] sum)
+    public void movements(ConsoleKey key, int[,] sum)
     {
         Console_Output con = new Console_Output(sapper);
+        Menu menu = new Menu();
         switch (key)
         {
             case ConsoleKey.UpArrow:
@@ -47,8 +48,9 @@ class Gameplay
                     con.print_opened(sum);
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("------GAME OVER------");
+                    Console.ResetColor();
                     Thread.Sleep(2500);
-                    Environment.Exit(0);
+                    menu.menu();
                 }
                 else if (sum[sapper.cursorY, sapper.cursorX] != 0)
                 {
@@ -60,13 +62,17 @@ class Gameplay
                 }
                 break;
             case ConsoleKey.Escape:
-                if (sapper.cursorX < sum.GetLength(1) - 1)
-                {
-                    break;
-                }
+                menu.menu();
                 break;
             case ConsoleKey.F:
-                sapper.Flag[sapper.cursorY, sapper.cursorX] = true;
+                if (sapper.Flag[sapper.cursorY, sapper.cursorX] == true)
+                {
+                    sapper.Flag[sapper.cursorY, sapper.cursorX] = false;
+                }
+                else
+                {
+                    sapper.Flag[sapper.cursorY, sapper.cursorX] = true;
+                }
                 break;
         }
     }
@@ -80,23 +86,21 @@ class Gameplay
         {
             var (x, y) = zero.Dequeue();
 
-            if (x < 0 || x >= sum.GetLength(1) || y < 0 || y >= sum.GetLength(0)) //не дивимось на те шо не підходить 
+            if (x < 0 || x >= sum.GetLength(1) || y < 0 || y >= sum.GetLength(0))
             {
                 continue;
             }
-            if (visited[x, y] || sapper.open[x, y])// і на те що вже бачили теж не дивимось
+            if (visited[y, x] || sapper.open[y, x])
             {
                 continue;
             }
-            visited[x, y] = true;
-            sapper.open[x, y] = true;
-            if (sum[x, y] != 0) // не дивимось на сусідів клітинки де не 0 (бо якщо там цифра один сусід точно бомба!!)
+            visited[y, x] = true;
+            sapper.open[y, x] = true;
+            if (sum[y, x] != 0)
             {
                 continue;
             }
-
-
-            for (int i = -1; i <= 1; i++)//а от тут якщо клітинки 0 то всіх сусідів додаємо
+            for (int i = -1; i <= 1; i++)
             {
                 for (int j = -1; j <= 1; j++)
                 {

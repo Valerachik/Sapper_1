@@ -4,17 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 class Console_Output
 {
     private Sapper sapper;
     public Console_Output(Sapper s)
     {
-        this.sapper = s;
+        sapper = s;
     }
     public void print(int[,] sum)
     {
-        
         for (int i = 0; i < sum.GetLength(0); i++)
         {
             for (int j = 0; j < sum.GetLength(1); j++)
