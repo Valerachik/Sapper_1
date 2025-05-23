@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 class Sapper
 {
@@ -14,14 +9,17 @@ class Sapper
     public int Width;
     public int Height;
     public bool[,] Open;
-    public int[,] gameField;
+    public int[,] GameField;
+    public const int Bomb = 9;
+    public const int Empty = 0;
+
     public Sapper(int width, int height, int bombs)
     {
         Width = width;
         Height = height;
         Bombs = bombs;
         Flags = bombs;
-        gameField = new int[width, height];
+        GameField = new int[width, height];
         Open = new bool[width, height];
         Flag = new bool[width, height];
     }

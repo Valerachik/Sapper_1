@@ -1,16 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 class Levels
 {
-    public void custom_level()
+    public void CreateCustomLevel()
     {
-        int bombs = 0, a = 0, b = 0;
-        Console.Clear();
+        int width = CheckRows();
+        int height = CheckColumns();
+        int bombs = CheckBombs(width, height);
+        Sapper sapper = new Sapper(width, height, bombs);
+        Level(sapper);
+    }
 
+    private static int CheckRows()
+    {
+        int rows = 0;
+        Console.Clear();
         do
         {
             bool validInput = true;
@@ -19,7 +23,7 @@ class Levels
                 try
                 {
                     Console.Write("Введіть кількість рядів: ");
-                    a = int.Parse(Console.ReadLine());
+                    rows = int.Parse(Console.ReadLine());
                     Console.WriteLine();
                     validInput = false;
                 }
@@ -36,17 +40,24 @@ class Levels
                 }
             }
             Console.Clear();
-            if (a < 2)
+            if (rows < 2)
             {
                 Console.Write("Кількість рядів не може буть менше за 2! Спробуйте ще раз");
                 Console.WriteLine();
             }
-            if (a > 14)
+            if (rows > 14)
             {
                 Console.Write("Кількість рядів не може буть більша за 14! Спробуйте ще раз");
                 Console.WriteLine();
             }
-        } while (a < 2 || a > 14);
+        } while (rows < 2 || rows > 14);
+
+        return rows;
+    }
+
+    private static int CheckColumns()
+    {
+        int columns = 0;
         Console.Clear();
         do
         {
@@ -56,7 +67,7 @@ class Levels
                 try
                 {
                     Console.Write("Введіть кількість стовпців: ");
-                    b = int.Parse(Console.ReadLine());
+                    columns = int.Parse(Console.ReadLine());
                     validInput = false;
                 }
                 catch (FormatException)
@@ -72,17 +83,23 @@ class Levels
                 }
             }
             Console.Clear();
-            if (b < 2)
+            if (columns < 2)
             {
                 Console.Write("Кількість стовпців не може буть менше за 2! Спробуйте ще раз");
                 Console.WriteLine();
             }
-            if (b > 28)
+            if (columns > 28)
             {
                 Console.Write("Кількість стовпців не може буть більша за 28! Спробуйте ще раз");
                 Console.WriteLine();
             }
-        } while (b < 2 || b > 28);
+        } while (columns < 2 || columns > 28);
+        return columns;
+    }
+
+    private static int CheckBombs(int width, int height)
+    {
+        int bombs = 0;
         Console.WriteLine();
         Console.Clear();
         do
@@ -107,7 +124,7 @@ class Levels
                     Console.WriteLine("Ви не ввели значення! Спробуйте ще раз.");
                 }
             }
-            if (bombs >= a * b)
+            if (bombs >= width * height)
             {
                 Console.Clear();
                 Console.Write("Бомб не може буть більше ніж клітинок на полі! Спробуйте ще раз!");
@@ -119,35 +136,34 @@ class Levels
                 Console.Write("На полі повинна бути хоча б одна бомба! Спробуйте ще раз!");
                 Console.WriteLine();
             }
-        } while (bombs >= a * b || bombs < 1);
+        } while (bombs >= width * height || bombs < 1);
         Console.Clear();
-        Sapper sapper = new Sapper(a, b, bombs);
-        level(sapper);
+        return bombs;
     }
 
-    public void level(Sapper sapper)
+    public void Level(Sapper sapper)
     {
         Menu menu = new Menu();
         Gameplay game = new Gameplay(sapper);
-        Console_Output con = new Console_Output(sapper);
-        Initialization_Methods init = new Initialization_Methods(sapper);
+        ConsoleOutput con = new ConsoleOutput(sapper);
+        InitializationMethods init = new InitializationMethods(sapper);
         ConsoleKey key;
-        init.field_bombs(sapper.gameField);
+        init.FillBombs(sapper.GameField);
         do
         {
             Console.Clear();
-            if (game.check_win(sapper.gameField) == sapper.Width * sapper.Height)
+            if (game.CheckWin(sapper.GameField) == sapper.Width * sapper.Height)
             {
-                con.print_opened(sapper.gameField);
+                con.PrintAnswer(sapper.GameField);
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("------YOU WIN-------");
                 Console.ResetColor();
                 Thread.Sleep(2500);
-                menu.menu();
+                menu.ShowMenu();
             }
-            con.print(sapper.gameField);
+            con.PrintGameField(sapper.GameField);
             key = Console.ReadKey(true).Key;
-            game.movements(key, sapper.gameField);
+            game.InGameMovement(key, sapper.GameField);
         } while (key != ConsoleKey.Escape);
     }
 }

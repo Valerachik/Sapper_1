@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 class Gameplay
 {
     private Sapper sapper;
+
     public Gameplay(Sapper s)
     {
         sapper = s;
     }
-    public void movements(ConsoleKey key, int[,] sum)
+
+    public void InGameMovement(ConsoleKey key, int[,] sum)
     {
-        Console_Output con = new Console_Output(sapper);
+        ConsoleOutput con = new ConsoleOutput(sapper);
         Menu menu = new Menu();
         switch (key)
         {
@@ -42,54 +40,63 @@ class Gameplay
                 }
                 break;
             case ConsoleKey.Enter:
-                if (sum[sapper.CursorY, sapper.CursorX] == 9)
+                if (sum[sapper.CursorY, sapper.CursorX] == Sapper.Bomb)
                 {
                     Console.Clear();
-                    con.print_opened(sum);
+                    con.PrintAnswer(sum);
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("------GAME OVER------");
                     Console.ResetColor();
                     Thread.Sleep(2500);
-                    menu.menu();
+                    menu.ShowMenu();
                 }
-                else if (sum[sapper.CursorY, sapper.CursorX] != 0)
+                else if (sum[sapper.CursorY, sapper.CursorX] != Sapper.Empty)
                 {
                     sapper.Open[sapper.CursorY, sapper.CursorX] = true;
+                    if (sapper.Flag[sapper.CursorY, sapper.CursorX])
+                    {
+                        sapper.Flag[sapper.CursorY, sapper.CursorX] = false;
+                        sapper.Flags++;
+                    }
                 }
-                else if (sum[sapper.CursorY, sapper.CursorX] == 0)
+                else if (sum[sapper.CursorY, sapper.CursorX] == Sapper.Empty)
                 {
-                    revealed_zero(sum);
+                    RevealedEmpty(sum);
                 }
                 break;
             case ConsoleKey.Escape:
-                menu.menu();
+                menu.ShowMenu();
                 break;
             case ConsoleKey.F:
-                if (sapper.Flags > 0)
+                if (!sapper.Open[sapper.CursorY, sapper.CursorX])
                 {
-                    if (sapper.Flag[sapper.CursorY, sapper.CursorX] == true)
+                    if (sapper.Flags > 0)
                     {
-                        sapper.Flag[sapper.CursorY, sapper.CursorX] = false;
-                        sapper.Flags++;
+                        if (sapper.Flag[sapper.CursorY, sapper.CursorX])
+                        {
+                            sapper.Flag[sapper.CursorY, sapper.CursorX] = false;
+                            sapper.Flags++;
+                        }
+                        else
+                        {
+                            sapper.Flag[sapper.CursorY, sapper.CursorX] = true;
+                            sapper.Flags--;
+                        }
                     }
-                    else
+                    else if (sapper.Flags == 0)
                     {
-                        sapper.Flag[sapper.CursorY, sapper.CursorX] = true;
-                        sapper.Flags--;
-                    }
-                }
-                else if (sapper.Flags == 0)
-                {
-                    if (sapper.Flag[sapper.CursorY, sapper.CursorX] == true)
-                    {
-                        sapper.Flag[sapper.CursorY, sapper.CursorX] = false;
-                        sapper.Flags++;
+                        if (sapper.Flag[sapper.CursorY, sapper.CursorX])
+                        {
+                            sapper.Flag[sapper.CursorY, sapper.CursorX] = false;
+                            sapper.Flags++;
+                        }
                     }
                 }
                 break;
         }
     }
-    public void revealed_zero(int[,] sum)
+
+    public void RevealedEmpty(int[,] sum)
     {
         bool[,] visited = new bool[sum.GetLength(0), sum.GetLength(1)];
         Queue<(int x, int y)> zero = new Queue<(int x, int y)>();
@@ -109,7 +116,12 @@ class Gameplay
             }
             visited[y, x] = true;
             sapper.Open[y, x] = true;
-            if (sum[y, x] != 0)
+            if (sapper.Flag[y, x])
+            {
+                sapper.Flag[y, x] = false;
+                sapper.Flags++;
+            }
+            if (sum[y, x] != Sapper.Empty)
             {
                 continue;
             }
@@ -126,18 +138,19 @@ class Gameplay
             }
         }
     }
-    public int check_win(int[,] sum)
+
+    public int CheckWin(int[,] sum)
     {
         int win = 0;
         for (int i = 0; i < sum.GetLength(0); i++)
         {
             for (int j = 0; j < sum.GetLength(1); j++)
             {
-                if (sum[i, j] != 9 && sapper.Open[i, j])
+                if (sum[i, j] != Sapper.Bomb && sapper.Open[i, j])
                 {
                     win++;
                 }
-                if (sum[i, j] == 9 && !sapper.Open[i, j])
+                if (sum[i, j] == Sapper.Bomb && !sapper.Open[i, j])
                 {
                     win++;
                 }

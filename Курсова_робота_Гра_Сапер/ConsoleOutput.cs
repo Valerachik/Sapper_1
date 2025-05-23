@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-class Console_Output
+class ConsoleOutput
 {
     private Sapper sapper;
-    public Console_Output(Sapper s)
+
+    public ConsoleOutput(Sapper s)
     {
         sapper = s;
     }
-    public void print(int[,] sum)
+
+    public void PrintGameField(int[,] sum)
     {
         for (int i = 0; i < sum.GetLength(0); i++)
         {
@@ -31,12 +29,12 @@ class Console_Output
                 }
                 else if (sapper.Open[i, j])
                 {
-                    if (sum[i, j] == 9)
+                    if (sum[i, j] == Sapper.Bomb)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkRed;
                         Console.Write("X");
                     }
-                    else if (sum[i, j] == 0)
+                    else if (sum[i, j] == Sapper.Empty)
                     {
                         Console.Write(" ");
                     }
@@ -62,7 +60,8 @@ class Console_Output
         }
         Console.WriteLine($"Прапорців усього: {sapper.Flags}");
     }
-    public void print_opened(int[,] sum)
+
+    public void PrintAnswer(int[,] sum)
     {
         for (int i = 0; i < sum.GetLength(0); i++)
         {
@@ -75,12 +74,12 @@ class Console_Output
                     Console.ForegroundColor = ConsoleColor.Black;
                 }
 
-                if (sum[i, j] == 9)
+                if (sum[i, j] == Sapper.Bomb)
                 {
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.Write("X");
                 }
-                else if (sum[i, j] == 0)
+                else if (sum[i, j] == Sapper.Empty)
                 {
                     Console.Write(" ");
                 }
